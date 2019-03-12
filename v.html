@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<svg version="1.2" baseProfile="full"   width="1600" height="900"  >
+    <polyline points="60 110 65 120 70 115 75 130 80 125 85 140 90 135 95 150 100 145"
+              stroke="orange" fill="transparent" stroke-width="5"/>
+    <path id="p" d="M100 100 S 100 150  300 100 " stroke="black" fill="transparent"/>
+    <path id="bezier" stroke="black"></path>
+    <path id="bezier2" stroke="black" stroke="black"></path>
+    <path d="M10 315
+           L 110 215
+           A 30 50 0 0 1 162.55 162.45
+           L 172.55 152.45
+           A 30 50 -45 1 1 215.1 109.9
+           L 315 10" stroke="black" fill="green" stroke-width="2" fill-opacity="0.5"/>
+    <filter id="filter-gooey"
+            x="-20%" >
+
+    </filter>
+</svg>
+<script>
+    let svg=document.querySelector('svg');
+    let p=svg.querySelector('#p')
+    let bezier=svg.querySelector('#bezier');
+    let bezier2=svg.querySelector("#bezier2");
+    svg.onmousemove=e=>{
+        let x=e .offsetX;
+        let y=e. offsetY;
+    p.setAttribute('d',`M100 100 Q ${x} ${y}  300 100`);
+    bezier.setAttribute('d',`M100 100 ${x} ${y}`);
+    bezier2.setAttribute('d',`M300 100 ${x} ${y}`);
+    }
+
+</script>
+</body>
+</html>
