@@ -1,0 +1,23 @@
+.table{
+    margin-top: 10%;
+height: 90%;
+}
+.table-header{
+    display: flex;
+    justify-content: space-between;
+    color: #61dafb;
+}
+
+.table-list{
+    position: relative;
+    transition:0.2s ease-in;
+    margin-top:0.2rem ;
+    background: rgba(2,155,251,0.3);
+
+
+}
+.table-list li div{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow:ellipsis
+}

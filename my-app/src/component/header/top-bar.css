@@ -1,7 +1,7 @@
 .nav-header{
     display: flex;
     font-size: 32px;
-    background: linear-gradient(to bottom,rgb(2,28,16),rgb(31,27,116));
+    background: radial-gradient(ellipse at bottom,rgba(2,155,251,0.88),black);
 }
 .nav-header .header-left{
     flex: 0 0 5%;
@@ -22,12 +22,12 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 4rem;
-    height: 2rem;
+    width: 2rem;
+    height: 1rem;
     border: 1px solid black;
     border-radius: 0 0.5rem/0 0.5rem;
     transform: skew(30deg);
-    background: rgb(55,103,181);
+    background: rgba(2,155,251,0.66)
 }
 .skew-angle.left{
     transform: skew(-30deg);
@@ -45,8 +45,12 @@
     height: 50%;
 }
 .nav-title .title-text{
-    font-size: 2rem;
+    display: flex;
+    align-items: flex-end;
+
+    font-size: 1rem;
     color: white;
+    vertical-align: bottom;
 }
 .trigger{
     color: white;

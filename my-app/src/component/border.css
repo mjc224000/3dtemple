@@ -1,0 +1,77 @@
+.draw {
+    position: relative;
+}
+
+.draw::before, .draw::after {
+    content: " ";
+    position: absolute;
+    border: 2px solid transparent;
+    width: 0;
+    height: 0;
+}
+
+.draw::before {
+    top: 0;
+    left: 0;
+}
+
+.draw::after {
+    bottom: 0;
+    right: 0;
+}
+
+
+.draw::before {
+    animation: change-flash2 4s infinite alternate;
+
+}
+
+.draw::before {
+    border-top-color: cyan;
+    border-right-color: cyan;
+}
+
+.draw::after {
+    border-bottom-color: greenyellow;
+    border-left-color: greenyellow;
+    animation: change-flash 4s 2s both infinite ;
+
+}
+
+@keyframes change-flash2 {
+    0% {
+        width: 0%;
+        height: 0%;
+    }
+    25% {
+        width: 100%;
+        height: 0%;
+    }
+    50% {
+        width: 100%;
+        height: 100%;
+    }
+    75% {
+        width: 100%;
+        height: 0;
+    }
+    100% {
+        width: 0;
+        height: 0;
+    }
+}
+
+@keyframes change-flash {
+    0% {
+        width: 0%;
+        height: 0%;
+    }
+    50% {
+        width: 100%;
+        height: 0%;
+    }
+    100% {
+        width: 100%;
+        height: 100%;
+    }
+}

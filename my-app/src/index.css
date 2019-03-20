@@ -11,7 +11,7 @@ body {
     background: black;
 }
 
-* {
+* ,ul{
     margin: 0;
     padding: 0;
 }
@@ -31,12 +31,15 @@ code {
 
 
 .row {
+    margin-top: 0.5rem;
     position: relative;
     display: flex;
     height: 9rem;
+    overflow: hidden;
 }
 
 .column-3 {
+    position: relative;
     width: 12.5rem;
 }
 

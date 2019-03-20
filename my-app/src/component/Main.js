@@ -7,7 +7,9 @@ import Sider from './sider';
 import legend from 'echarts/lib/component/legend';
 import HomePage from './home-page';
 const {Content} = Layout;
+const windowSize=React.createContext({
 
+});
 class Main extends React.Component {
     state = {
         collapsed: false,
