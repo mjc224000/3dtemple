@@ -40,10 +40,10 @@ code {
 
 .column-3 {
     position: relative;
-    width: 12.5rem;
+    width:25%;
 }
 
 .column-6 {
     position: relative;
-    width: 25rem;
+    width: 50%;
 }
