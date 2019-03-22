@@ -20,7 +20,7 @@ class Main extends React.Component {
 
     render() {
         return (
-            <Layout>
+            <Layout className={'wrap'}>
                 <Sider
                     trigger={null}
                     collapsible
@@ -28,7 +28,6 @@ class Main extends React.Component {
                 />
                 <Layout>
                     <Header onToggle={() => this.toggle()} isCollapsed={this.state.collapsed}/>
-
                   <Switch>
                       <Route exact path={'/'} component={HomePage}/>
                       <Route path={'/cockpit'} component={CockPitPage}/>

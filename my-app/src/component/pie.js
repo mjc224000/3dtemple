@@ -67,11 +67,11 @@ class Pie extends Component {
         let height = 9 * rem;
 
         return (
-            <div style={{width: '90%', height: '90%',margin:'auto',position:'relative'}} ref={'box'}>
+
                 <div style={{width: width, height: height, position: "relative"}} ref={'pie'}>
 
                 </div>
-            </div>
+
         );
     }
 }

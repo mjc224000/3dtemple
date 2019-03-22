@@ -10,7 +10,7 @@ import Bar from './bar';
 import Pie from './pie';
 import Border from './border';
 import Table from './table';
-
+import F from './test';
 const {Content} = Layout;
 
 class HomePage extends Component {
@@ -27,6 +27,7 @@ class HomePage extends Component {
                                 <Line/>
                             </Presentation>
                         </div>
+                        <F/>
                         <div className={'column-6'}>
                             <TextAnimation/>
                             {/*    <D3Panel/>*/}
@@ -51,18 +52,23 @@ class HomePage extends Component {
                     <div className={'row'}>
                         <div className={'column-3'}>
                             <Border>
-                                <Table/>
+                                 <Table/>
                             </Border>
 
                         </div>
                         <div className={'column-3'}>
                             <Presentation>
-                                <Pie/>
+                               <Pie/>
                             </Presentation>
                         </div>
                         <div className={'column-3'}>
                             <Presentation>
-                                <Pie/>
+                                 <Pie/>
+                            </Presentation>
+                        </div>
+                        <div className={'column-3'}>
+                            <Presentation>
+                               {/* <Table /> */}
                             </Presentation>
                         </div>
                     </div>

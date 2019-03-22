@@ -8,9 +8,9 @@ class Presentation extends Component {
     }
 
     render() {
-        return (<div className={'presentation'}>
+        return (<div className={'presentation'} >
             <Border></Border>
-            {[this.props.children]}
+            { [this.props.children]}
             <div ref={'myt'} className={'presentation-plate'}></div>
         </div>)
     }
