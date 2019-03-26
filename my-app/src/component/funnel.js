@@ -76,8 +76,8 @@ class Funel extends Component{
     render(){
         let rem = window.rem;
         let width = 12.5 * rem;
-        let height = 9 * rem;
-        return(<div style={{width,height}} ref={'funnel'}>
+        let height = 8.5 * rem;
+        return(<div style={{width,height,paddingTop:'0.5rem'}} ref={'funnel'}>
 
         </div>)
     }

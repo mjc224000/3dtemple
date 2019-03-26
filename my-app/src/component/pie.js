@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import echarts from 'echarts/lib/echarts';
-
+import {Consumer} from './Main';
 import 'echarts/lib/chart/pie';
 
 class Pie extends Component {
@@ -63,16 +63,12 @@ class Pie extends Component {
 
     render() {
         let rem = window.rem;
-        let width = 12.5 * rem;
-        let height = 9 * rem;
+        let width = 12 * rem;
+        let height = 8.5 * rem;
 
         return (
-
-                <div style={{width: width, height: height, position: "relative"}} ref={'pie'}>
-
-                </div>
-
-        );
+            <div style={{width: width, height: height, position: "relative"}} ref={'pie'}>
+        </div>);
     }
 }
 

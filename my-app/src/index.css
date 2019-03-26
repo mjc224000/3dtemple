@@ -8,14 +8,24 @@ body {
     -moz-osx-font-smoothing: grayscale;
     transform-style: preserve-3d;
     perspective: 2000px;
-    background: black;
+
 }
 
-* ,ul{
+*, ul {
     margin: 0;
     padding: 0;
 }
+#root{
 
+    height: 100vh;
+}
+.main{
+    position: relative;
+    min-height: 100% !important;
+}
+.content{
+    background: black !important;
+}
 li {
     list-style: none;
 }
@@ -25,22 +35,29 @@ code {
     monospace;
 }
 
-.content {
-    background-color: black;
+.clc{
+width: 100%;
+    height: 100%;
 }
+
+
 
 
 .row {
     margin-top: 0.5rem;
     position: relative;
     display: flex;
-    height: 9rem;
+    height: 33.3%;
     overflow: hidden;
+}
+
+.row:first-child {
+    margin-top: 0rem;
 }
 
 .column-3 {
     position: relative;
-    width:25%;
+    width: 25%;
 }
 
 .column-6 {

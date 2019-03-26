@@ -39,6 +39,14 @@ function randColor() {
 }
 
 class Point {
+    animationFrame;
+    timeout;
+
+    onCancel() {
+        window.cancelAnimationFrame(this.animationFrame);
+        window.clearTimeout(this.timeout);
+    }
+
     constructor({x, y, radius, color, ctx}) {
         this.x = x;
         this.y = y;
@@ -58,7 +66,7 @@ class Point {
         Point.width = width;
         Point.height = height;
         Point.ctx = ctx;
-        Point.isFinished=false;
+        Point.isFinished = false;
         ctx.clearRect(0, 0, width, height);
     }
 
@@ -69,7 +77,7 @@ class Point {
         let x, y;
         let ctx = Point.ctx;
         skip = skip || 1;
-        Point.points=[];
+        Point.points = [];
         for (let i = 0; i < width; i += skip) {
             for (let j = 0; j < height; j += skip) {
                 x = i + startX;
@@ -104,23 +112,26 @@ class Point {
 
     static animation() {
         let {width, height, ctx, points, duration} = Point;
+        let that = this;
         return new Promise(function (resolve) {
             function animation(t) {
                 ctx.clearRect(0, 0, width, height);
+                if (t > duration || Point.isFinished) {
+                    resolve();
+                    return;
+                }
                 points.forEach((item) => {
                     item.draw();
                     item.move(t, duration);
                 })
-                if (t > duration||Point.isFinished) {
-                    resolve();
-                    return;
-                }
 
-                setTimeout(() => {
-                    requestAnimationFrame(() => {
+
+                that.timeout = setTimeout(() => {
+                    that.animationFrame = requestAnimationFrame(() => {
                         animation(++t);
+                        //   console.log(that.animationFrame);
                     })
-                }, 1000 / 60);
+                }, 1000/60);
             }
 
             animation(0);
@@ -128,7 +139,7 @@ class Point {
     }
 
     static animationGroup() {
-        if(Point.isFinished){
+        if (Point.isFinished) {
             return
         }
         Point.points.forEach(i => i.reset());
@@ -184,6 +195,10 @@ class Point {
 
 class TextAnimation extends Component {
     componentDidMount() {
+        if(Point.points.length){
+            console.log(Point.points.length);
+            return;
+        }
         let canvas = this.refs['canvas'];
         let ctx = canvas.getContext('2d');
         ctx.globalCompositeOperation = 'lighten';
@@ -202,21 +217,33 @@ class TextAnimation extends Component {
         })
         Point.getPixel(0, 0, width, height, 2, ctx);
         Point.animationGroup();
-      console.log('触发');
+        console.log('text didmount');
 
     }
-componentWillUnmount() {
-        //window.clearTimeout(Point.t);
-     Point.isFinished=true;
-}
 
+    componentWillUnmount() {
+        //window.clearTimeout(Point.t);
+        Point.isFinished = true;
+        Point.prototype.onCancel();
+        Point.points.splice(0, Point.points.length );
+
+    }
+    handleCancel(){
+        Point.isFinished = true;
+        Point.prototype.onCancel();
+        Point.points.splice(0, Point.points.length );
+    }
     render() {
         let rem = window.rem;
         let width = 25 * rem;
         let height = 5 * rem;
-        return (<canvas  width={width} height={height} style={{width: width, height: height}} ref={'canvas'}>
+        return (
+            <> <button onClick={()=>this.handleCancel()}>aaaa</button>
+            <canvas width={width} height={height} style={{width: width, height: height}} ref={'canvas'}>
 
-        </canvas>)
+        </canvas>
+            </>
+        )
     }
 }
 

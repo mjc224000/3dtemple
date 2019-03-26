@@ -3,6 +3,11 @@ import echarts from 'echarts/lib/echarts';
 import 'echarts/lib/chart/line';
 
 class Line extends Component {
+
+    constructor(props){
+        super(props);
+        this.lineChart=undefined;
+    }
     componentDidMount() {
         let line = this.refs['line'];
         console.log(line);
@@ -18,19 +23,38 @@ class Line extends Component {
             series: [{
                 data: [820, 932, 901, 934, 1290, 1330, 1320],
                 type: 'line',
-                areaStyle: {}
+                areaStyle: {
+                    color: {
+                        type: 'linear',
+                        x: 0,
+                        y: 0,
+                        x2: 0,
+                        y2: 1,
+                        colorStops: [{
+                            offset: 0, color: 'rgba(0,255,255,1)' // 0% 处的颜色
+                        }, {
+                            offset: 1, color: 'rgba(0,255,255,0)' // 100% 处的颜色
+                        }],
+                        global: false // 缺省为 false
+                    }
+
+                }
             }]
         };
-        let lineChart = echarts.init(line);
-        lineChart.setOption(option);
+          this.lineChart = echarts.init(line);
+        this.lineChart.setOption(option);
+    }
+    shouldComponentUpdate(nextProps, nextState, nextContext) {
+        this.lineChart.resize();
+        return true;
     }
 
     render() {
         let rem = window.rem;
-        let width = 12.5 * rem;
+        let width = 12 * rem;
         let height = 9 * rem;
         return (
-            <div style={{width: width, height:height, position: "relative"}} ref={'line'}>
+            <div   style={{width,height}}    ref={'line'}>
 
             </div>
         );

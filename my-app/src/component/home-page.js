@@ -10,16 +10,24 @@ import Bar from './bar';
 import Pie from './pie';
 import Border from './border';
 import Table from './table';
-import F from './test';
+import svgBorder2 from './presentation/svgBorder2';
 const {Content} = Layout;
-
 class HomePage extends Component {
+    componentDidMount() {
+        window.addEventListener('resize', this.onWindowResize);
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener('resize', this.onWindowResize)
+    }
+
+    onWindowResize(e) {
+
+    }
+
     render() {
         return (
-            <Content style={{
-                margin: '24px 16px', padding: 24, background: '#fff', minHeight: 280,
-            }}
-            >
+            <Content>
                 <div className={'content'}>
                     <div className={'row'}>
                         <div className={'column-3'}>
@@ -27,7 +35,6 @@ class HomePage extends Component {
                                 <Line/>
                             </Presentation>
                         </div>
-                        <F/>
                         <div className={'column-6'}>
                             <TextAnimation/>
                             {/*    <D3Panel/>*/}
@@ -52,23 +59,23 @@ class HomePage extends Component {
                     <div className={'row'}>
                         <div className={'column-3'}>
                             <Border>
-                                 <Table/>
+                                <Table/>
                             </Border>
 
                         </div>
                         <div className={'column-3'}>
                             <Presentation>
-                               <Pie/>
+                                <Pie/>
                             </Presentation>
                         </div>
                         <div className={'column-3'}>
                             <Presentation>
-                                 <Pie/>
+                                <Pie/>
                             </Presentation>
                         </div>
                         <div className={'column-3'}>
                             <Presentation>
-                               {/* <Table /> */}
+                                {/* <Table /> */}
                             </Presentation>
                         </div>
                     </div>
