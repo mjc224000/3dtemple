@@ -10,7 +10,6 @@ class Line extends Component {
     }
     componentDidMount() {
         let line = this.refs['line'];
-        console.log(line);
         let option = {
             xAxis: {
                 type: 'category',

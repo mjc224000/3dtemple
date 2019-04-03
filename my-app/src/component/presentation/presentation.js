@@ -3,10 +3,6 @@ import './presentation.css';
 import Border from './border';
 
 class Presentation extends Component {
-    componentDidMount() {
-        console.log(this.refs)
-    }
-
     render() {
         return (<div className={'presentation'} >
             <Border></Border>

@@ -5,7 +5,6 @@ function drawTxt(context) {
     return function ({textBaseline, maxWidth, content, font, position, mode}) {
         let ctx = context;
         ctx.font = font || '64px serif';
-        console.log(maxWidth);
         ctx.textBaseline = textBaseline || "middle";
         ctx.textAlign = 'center';
         ctx.strokeStyle = 'white';
@@ -41,11 +40,14 @@ function randColor() {
 class Point {
     animationFrame;
     timeout;
+    static currentTime = 0;
 
     onCancel() {
         window.cancelAnimationFrame(this.animationFrame);
         window.clearTimeout(this.timeout);
     }
+
+
 
     constructor({x, y, radius, color, ctx}) {
         this.x = x;
@@ -67,6 +69,7 @@ class Point {
         Point.height = height;
         Point.ctx = ctx;
         Point.isFinished = false;
+        Point.currentTime = 0;
         ctx.clearRect(0, 0, width, height);
     }
 
@@ -104,7 +107,6 @@ class Point {
 
     static draw() {
         Point.points.forEach((item) => {
-
             item.draw();
 
         })
@@ -113,28 +115,32 @@ class Point {
     static animation() {
         let {width, height, ctx, points, duration} = Point;
         let that = this;
-        return new Promise(function (resolve) {
-            function animation(t) {
+        return new Promise(function (resolve, reject) {
+            function animation() {
                 ctx.clearRect(0, 0, width, height);
-                if (t > duration || Point.isFinished) {
+                if (Point.currentTime > duration || Point.isFinished) {
+                    Point.currentTime = 0;
                     resolve();
                     return;
                 }
                 points.forEach((item) => {
                     item.draw();
-                    item.move(t, duration);
+                    item.move(Point.currentTime, duration);
                 })
-
-
                 that.timeout = setTimeout(() => {
                     that.animationFrame = requestAnimationFrame(() => {
-                        animation(++t);
-                        //   console.log(that.animationFrame);
+                        if (Point.currentTime > duration || Point.isFinished) {
+                            Point.currentTime = 0
+                            resolve();
+                            return;
+                        }
+                        Point.currentTime++;
+                        animation();
                     })
-                }, 1000/60);
+                }, 1000 / 60);
             }
 
-            animation(0);
+            animation();
         })
     }
 
@@ -147,7 +153,6 @@ class Point {
             //回去
             Point.setOrigin();
         }).then(() => {
-
             return Point.animation();
 
         }).then(Point.animationGroup);
@@ -169,8 +174,6 @@ class Point {
         if (t <= duration) {
             this.x = tween['Elastic']['easeOut'](t, this.sourceX, this.distX, duration);
             this.y = tween['Elastic']['easeOut'](t, this.sourceY, this.distY, duration);
-        } else {
-
         }
     }
 
@@ -195,7 +198,7 @@ class Point {
 
 class TextAnimation extends Component {
     componentDidMount() {
-        if(Point.points.length){
+        if (Point.points.length) {
             console.log(Point.points.length);
             return;
         }
@@ -217,31 +220,34 @@ class TextAnimation extends Component {
         })
         Point.getPixel(0, 0, width, height, 2, ctx);
         Point.animationGroup();
+        console.log(Point.points);
         console.log('text didmount');
 
     }
-
+    shouldComponentUpdate(){
+        return false
+    }
     componentWillUnmount() {
-        //window.clearTimeout(Point.t);
-        Point.isFinished = true;
-        Point.prototype.onCancel();
-        Point.points.splice(0, Point.points.length );
+        this.handleCancel()
+    }
 
-    }
-    handleCancel(){
+    handleCancel() {
         Point.isFinished = true;
         Point.prototype.onCancel();
-        Point.points.splice(0, Point.points.length );
+        Point.points.splice(0, Point.points.length);
+        Point.currentTime = 0;
     }
+
     render() {
         let rem = window.rem;
         let width = 25 * rem;
         let height = 5 * rem;
         return (
-            <> <button onClick={()=>this.handleCancel()}>aaaa</button>
-            <canvas width={width} height={height} style={{width: width, height: height}} ref={'canvas'}>
-
-        </canvas>
+            <>
+                <button onClick={() => this.handleCancel()}>aaaa</button>
+                <button onClick={() => this.componentDidMount()}>bbbbbb</button>
+                <canvas width={width} height={height} style={{width: width, height: height}} ref={'canvas'}>
+                </canvas>
             </>
         )
     }

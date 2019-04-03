@@ -40,7 +40,10 @@ width: 100%;
     height: 100%;
 }
 
-
+.center{
+    display: flex;
+    flex: auto;
+}
 
 
 .row {
@@ -58,6 +61,10 @@ width: 100%;
 .column-3 {
     position: relative;
     width: 25%;
+}
+.column-4{
+    position: relative;
+    width: 33.3%;
 }
 
 .column-6 {

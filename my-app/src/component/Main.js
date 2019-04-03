@@ -27,6 +27,7 @@ class Main extends React.Component {
 
     componentDidMount() {
         console.log(document.body.scrollWidth, 'scrollWidth');
+        console.log(document.body.scrollHeight,'scrollHeight');
     }
 
     render() {
@@ -40,10 +41,13 @@ class Main extends React.Component {
                 <Layout className={'content'}>
                     <Header onToggle={() => this.toggle()} isCollapsed={this.state.collapsed}/>
                     <Provider
-                        value={{contentWidth: this.state.collapsed ? document.body.scrollWidth - 80 : document.body.scrollWidth - 200}}>
+                        value={{
+                            contentWidth: this.state.collapsed ? document.body.scrollWidth - 80 : document.body.scrollWidth - 200,
+                            isCollapsed: this.state.collapsed
+                        }}>
                         <Switch>
                             <Route exact path={'/'} component={() => <HomePage/>}/>
-                            <Route path={'/cockpit'} component={CockPitPage}/>
+                            <Route path={'/cockpit'} component={() => <CockPitPage/>}/>
                         </Switch>
                     </Provider>
                 </Layout>
