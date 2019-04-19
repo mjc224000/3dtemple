@@ -25,8 +25,11 @@ class SiderContainer extends Component{
 
                 </Menu.Item>
                 <Menu.Item key="3">
-                    <Icon type="upload"/>
-                    <span>nav 3</span>
+                    <Link to={'/admin'}>
+                        <Icon type="upload"/>
+                        <span>admin</span>
+                    </Link>
+
                 </Menu.Item>
             </Menu>
         </Sider>)

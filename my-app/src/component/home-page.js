@@ -13,17 +13,6 @@ import Table from './table';
 import svgBorder2 from './presentation/svgBorder2';
 const {Content} = Layout;
 class HomePage extends Component {
-    componentDidMount() {
-        window.addEventListener('resize', this.onWindowResize);
-    }
-
-    componentWillUnmount() {
-        window.removeEventListener('resize', this.onWindowResize)
-    }
-
-    onWindowResize(e) {
-
-    }
 
     render() {
         return (
@@ -36,7 +25,7 @@ class HomePage extends Component {
                             </Presentation>
                         </div>
                         <div className={'column-6'}>
-                            <TextAnimation/>
+                          {/*  <TextAnimation/>*/}
                             {/*    <D3Panel/>*/}
                         </div>
                         <div className={'column-3'}>

@@ -1,18 +1,19 @@
 import React, {Component} from 'react';
 import {Layout, Menu, Icon} from 'antd';
 import {Route, Switch} from "react-router-dom";
-import CockPitPage from './cockpit-page';
+import CockPitPage from './pages/cockpit-page';
 import Header from './header/header';
 import Sider from './sider';
 import legend from 'echarts/lib/component/legend';
 import HomePage from './home-page';
-
+import Admin from './pages/admin'
 const {Provider, Consumer} = React.createContext('defaultValue')
 export {Consumer}
 
 class Main extends React.Component {
     state = {
         collapsed: false,
+        resize:false
     };
 
     toggle = () => {
@@ -21,13 +22,27 @@ class Main extends React.Component {
         });
     }
 
+
     constructor(props) {
         super(props);
     }
 
     componentDidMount() {
-        console.log(document.body.scrollWidth, 'scrollWidth');
-        console.log(document.body.scrollHeight,'scrollHeight');
+console.log('fff didmount')
+        window.addEventListener('resize', this.onWindowResize);
+    }
+
+
+    componentWillUnmount() {
+        window.removeEventListener('resize', this.onWindowResize)
+    }
+
+    onWindowResize = () => {
+         console.log('resize');
+        this.setState((pre)=>{
+          pre.resize=!pre.resize;
+            return pre
+        });
     }
 
     render() {
@@ -46,8 +61,9 @@ class Main extends React.Component {
                             isCollapsed: this.state.collapsed
                         }}>
                         <Switch>
-                            <Route exact path={'/'} component={() => <HomePage/>}/>
+                            <Route exact path={'/'} component={HomePage}/>
                             <Route path={'/cockpit'} component={() => <CockPitPage/>}/>
+                            <Route path={'/admin'} component={Admin}  />
                         </Switch>
                     </Provider>
                 </Layout>
