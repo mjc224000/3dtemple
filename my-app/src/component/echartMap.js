@@ -17,27 +17,9 @@ class EchartMap extends Component {
         this.lineRef = React.createRef();
     }
 
-    convertData = (data, geoCoordMap) => {
 
-        var res = [];
-
-        for (var i = 0; i < data.length; i++) {
-            var dataItem = data[i];
-            var fromCoord = geoCoordMap[dataItem[0].name];
-            var toCoord = geoCoordMap[dataItem[1].name];
-            if (fromCoord && toCoord) {
-                res.push({
-                    fromName: dataItem[0].name,
-                    toName: dataItem[1].name,
-                    coords: [fromCoord, toCoord]
-                });
-            }
-        }
-        return res;
-    }
     convert = (routineData, geoData) => {
         let ret = [];
-        console.log(routineData,geoData)
         for (let key in routineData) {
             let fromName = key;
             let fromCoord = geoData[key];
@@ -59,54 +41,14 @@ class EchartMap extends Component {
 
         let message = await fetch.get(api.geo_coor);
         let rotine = await fetch.get(api.geo_rotine);
-        rotine=rotine.data;
-
+        rotine = rotine.data;
         let geoCoordMap = message.data;
-        var BJData = [
-            [{name: '北京'}, {name: '上海', value: 95}],
-            [{name: '北京'}, {name: '广州', value: 90}],
-            [{name: '北京'}, {name: '大连', value: 80}],
-            [{name: '北京'}, {name: '南宁', value: 70}],
-            [{name: '北京'}, {name: '南昌', value: 60}],
-            [{name: '北京'}, {name: '拉萨', value: 50}],
-            [{name: '北京'}, {name: '长春', value: 40}],
-            [{name: '北京'}, {name: '包头', value: 30}],
-            [{name: '北京'}, {name: '重庆', value: 20}],
-            [{name: '北京'}, {name: '常州', value: 10}]
-        ];
-
-        var SHData = [
-            [{name: '上海'}, {name: '包头', value: 95}],
-            [{name: '上海'}, {name: '昆明', value: 90}],
-            [{name: '上海'}, {name: '广州', value: 80}],
-            [{name: '上海'}, {name: '郑州', value: 70}],
-            [{name: '上海'}, {name: '长春', value: 60}],
-            [{name: '上海'}, {name: '重庆', value: 50}],
-            [{name: '上海'}, {name: '长沙', value: 40}],
-            [{name: '上海'}, {name: '北京', value: 30}],
-            [{name: '上海'}, {name: '丹东', value: 20}],
-            [{name: '上海'}, {name: '大连', value: 10}]
-        ];
-
-        var GZData = [
-            [{name: '广州'}, {name: '福州', value: 95}],
-            [{name: '广州'}, {name: '太原', value: 90}],
-            [{name: '广州'}, {name: '长春', value: 80}],
-            [{name: '广州'}, {name: '重庆', value: 70}],
-            [{name: '广州'}, {name: '西安', value: 60}],
-            [{name: '广州'}, {name: '成都', value: 50}],
-            [{name: '广州'}, {name: '常州', value: 40}],
-            [{name: '广州'}, {name: '北京', value: 30}],
-            [{name: '广州'}, {name: '北海', value: 20}],
-            [{name: '广州'}, {name: '海口', value: 10}]
-        ];
-
         var color = ['#a6c84c', '#ffa022', '#ff1234'];
         var series = [];
-
-        [['北京', BJData], ['上海', SHData], ['广州', GZData]].forEach(function (item, i) {
-             series.push( {
-                    name: item[0] + ' Top10',
+        let i = 0;
+        for (let key in rotine) {
+            series.push({
+                    name: key + ' Top10',
                     type: 'lines',
                     zlevel: 1,
                     effect: {
@@ -123,10 +65,10 @@ class EchartMap extends Component {
                             curveness: 0.2
                         }
                     },
-                    data: this.convert(rotine,geoCoordMap)
+                    data: this.convert(rotine, geoCoordMap)
                 },
                 {
-                    name: item[0] + ' Top10',
+                    name: key + ' Top10',
                     type: 'lines',
                     zlevel: 2,
                     symbol: ['none', 'arrow'],
@@ -149,7 +91,7 @@ class EchartMap extends Component {
                     data: this.convert(rotine, geoCoordMap)
                 },
                 {
-                    name: item[0] + ' Top10',
+                    name: key + ' Top10',
                     type: 'effectScatter',
                     coordinateSystem: 'geo',
                     zlevel: 2,
@@ -172,15 +114,16 @@ class EchartMap extends Component {
                             color: color[i]
                         }
                     },
-                    data: item[1].map(function (dataItem) {
+                    data: rotine[key].map(function (dataItem) {
 
                         return {
-                            name: dataItem[1].name,
-                            value: geoCoordMap && geoCoordMap[dataItem[1].name].concat([dataItem[1].value]) || []
+                            name: dataItem['dest'],
+                            value: geoCoordMap && geoCoordMap[dataItem['dest']].concat([dataItem.value]) || []
                         };
                     })
                 });
-        }.bind(this));
+            i++;
+        }
         let option = {
             backgroundColor: 'transparent',
 
@@ -231,25 +174,36 @@ class EchartMap extends Component {
             this.map = echarts.init(this.mapRef.current);
             this.map.setOption(option, false);
         }
-        /* this.initLine();*/
+        this.initLine(rotine,color);
     }
 
     componentWillUnmount() {
         this.map && this.map.dispose();
     }
 
-    initLine() {
+    initLine(rotine,color) {
+        let xData = [];
+        let yData = []
+        for (let key in rotine) {
+            xData.push(key)
+            let value = 0;
+            rotine[key].forEach(function (item) {
+                value += item['value'];
+            })
+            yData.push(value);
+        }
+        let i=0;
         let option = {
             xAxis: {
                 type: 'category',
                 boundaryGap: true,
-                data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+                data: xData
             },
             yAxis: {
                 type: 'value'
             },
             series: [{
-                data: [820, 932, 901, 934, 1290, 1330, 1320],
+                data: yData,
                 type: 'bar',
                 areaStyle: {
                     color: {
@@ -266,11 +220,16 @@ class EchartMap extends Component {
                         global: false // 缺省为 false
                     }
 
+                },
+                itemStyle:{
+                    color:function () {
+                        return color[i++];
+                    }
                 }
             }]
         };
-        let line = echarts.init(this.lineRef.current);
-        line.setOption(option);
+        let line = this.lineRef.current && echarts.init(this.lineRef.current);
+        line && line.setOption(option);
     }
 
     render() {
