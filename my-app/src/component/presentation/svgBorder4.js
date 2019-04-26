@@ -16,13 +16,14 @@ class svgBorder4  extends Component {
                     <circle r="4" fill="url(#rG1)"></circle>
                 </g>
             </defs>
-            <path d="M0,0 174,0  194,24 402,24 424,0 596,0  596,727 0,727 0,0" stroke="rgb(200,200,80)" fill="none"></path>
-            <path d="M10,10 164,10 184,34 412,34 434,10 586,10 586,717 10,717 10,10" fill="url(#lG1)"></path>
+            <path  d="M0,0 166,0 190,27 517,27 517,477 0,477 0,0"  stroke="rgb(200,200,80)" fill="none"></path>
+            <path d="M10,10 156,10 188,43 507,43 507,467 10,467 10,10" fill="url(#lG1)"></path>
             <use x="10" y="10" xlinkHref="#c1"></use>
-            <use x="156" y="10" xlinkHref="#c1"></use>
-            <use   x="467" y="43" xlinkHref="#c1"></use>
-            <use x="467" y="507" xlinkHref="#c1"></use>
-            <use x="10" y="507" xlinkHref="#c1"></use>
+            <use  x="156" y="10" xlinkHref="#c1"></use>
+            <use x="188" y="43" xlinkHref="#c1"></use>
+            <use x="507" y="43" xlinkHref="#c1"></use>
+            <use x="507" y="467" xlinkHref="#c1"></use>
+            <use x="10" y="467" xlinkHref="#c1"></use>
         </svg>)
     }
 }

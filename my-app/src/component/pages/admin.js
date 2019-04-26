@@ -26,10 +26,12 @@ const breadcrumbNameMap = {
 };
 export default withRouter((props) => {
     const {location} = props;
+   console.log(location);
     const pathSnippets = location.pathname.split('/').filter(i => i);
-    console.log(pathSnippets);
+
     const extraBreadcrumbItems = pathSnippets.map((_, index) => {
         const url = `/${pathSnippets.slice(0, index + 1).join('/')}`;
+        console.log(url,'url');
         return (
             <Breadcrumb.Item key={url}>
                 <Link to={url}>
@@ -43,6 +45,7 @@ export default withRouter((props) => {
             <Link to="/">Home</Link>
         </Breadcrumb.Item>
     )].concat(extraBreadcrumbItems);
+
     return (
         <Router>
             <div className="demo">
