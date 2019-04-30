@@ -14,7 +14,7 @@ class CockpitPage extends Component {
         super(props);
         this.state = {
             geoCoordMap: null,
-            treeData: []
+            treeData: {}
         };
     }
 

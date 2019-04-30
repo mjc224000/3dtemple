@@ -6,8 +6,6 @@ import {Consumer} from "./Main";
 import PropTypes from 'prop-types';
 import fetch from '../fetch'
 import {api} from "../api";
-import axios from "axios";
-
 class EchartMap extends Component {
     static propTypes = {geoCoordMap: PropTypes.object}
 

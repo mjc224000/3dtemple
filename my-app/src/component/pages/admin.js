@@ -1,15 +1,11 @@
-import React,{Component} from 'react'
+import React, {Component} from 'react'
 import {
     HashRouter as Router, Route, Switch, Link, withRouter,
 } from 'react-router-dom';
 import {Breadcrumb, Alert} from 'antd';
 import EditablePage from "../admin_geo_map";
-import TreeManage from '../admin-tree';
-
+import {TreeManage} from "../../container/treeManage";
 import './admin.css'
-import fetch from "../../fetch";
-import {api} from "../../api";
-
 const Apps = () => (
     <ul className="app-list">
         <li>
@@ -30,68 +26,63 @@ const breadcrumbNameMap = {
     "/geo_map": '地理地图',
     '/tree': '树状图'
 };
-export default class Admin extends Component{
-    componentDidMount() {
 
-    }
-    async fetchTreeData() {
-        let treeData = await fetch.get(api.tree);
-        treeData=treeData.data;
-        this.setState({
-            treeData: treeData
-        })
+export class Admin extends Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+            treeData: []
+        }
     }
 
-    render(){
-        return  withRouter((props) => {
-            const {location} = props;
-            let pathSnippets = location.hash.slice(1);
-            console.log(pathSnippets, 'pathSnippet');
-            // filter 过滤掉'' 空字符串，同时转成数组
-            pathSnippets = pathSnippets.split('/').filter(i => i);
-            console.log(location.hash);
-            const extraBreadcrumbItems = pathSnippets.map((_, index) => {
-                const url = `/${pathSnippets.slice(0, index + 1).join('/')}`;
-                console.log(url, 'url');
-                return (
-                    <Breadcrumb.Item key={url}>
-                        <Link to={url}>
-                            {breadcrumbNameMap[url]}
-                        </Link>
-                    </Breadcrumb.Item>
-                );
-            });
-            const breadcrumbItems = [(
-                <Breadcrumb.Item key="home">
-                    <Link to="/">Home</Link>
-                </Breadcrumb.Item>
-            )].concat(extraBreadcrumbItems);
+    render() {
 
+        const {location} = this.props;
+        let pathSnippets = location.hash.slice(1);
+        console.log(pathSnippets, 'pathSnippet');
+        // filter 过滤掉'' 空字符串，同时转成数组
+        pathSnippets = pathSnippets.split('/').filter(i => i);
+        console.log(location.hash);
+        const extraBreadcrumbItems = pathSnippets.map((_, index) => {
+            const url = `/${pathSnippets.slice(0, index + 1).join('/')}`;
+            console.log(url, 'url');
             return (
-                <Router>
-                    <div className="demo">
-                        <div className="demo-nav">
-                            <Link to="/">Home</Link>
-                            <Link to="/apps">Application List</Link>
-                            <Link to={"/geo_map"}>地图信息</Link>
-                            <Link to={'/tree'}>树状图</Link>
-                        </div>
-                        <Switch>
-                            <Route path="/apps" component={Apps}/>
-                            <Route path={"/geo_map"} component={EditablePage}/>
-                            <Route path={'/tree'} render={()=><TreeManage />}/>
-                            <Route render={() => <span>Home Page</span>}/>
-
-                        </Switch>
-                        <Alert style={{margin: '16px 0'}} message="Click the navigation above to switch:"/>
-                        <Breadcrumb>
-                            {breadcrumbItems}
-                        </Breadcrumb>
-                    </div>
-                </Router>
-
+                <Breadcrumb.Item key={url}>
+                    <Link to={url}>
+                        {breadcrumbNameMap[url]}
+                    </Link>
+                </Breadcrumb.Item>
             );
         });
+        const breadcrumbItems = [(
+            <Breadcrumb.Item key="home">
+                <Link to="/">Home</Link>
+            </Breadcrumb.Item>
+        )].concat(extraBreadcrumbItems);
+        return (
+            <Router>
+                <div className="demo">
+                    <div className="demo-nav">
+                        <Link to="/">Home</Link>
+                        <Link to="/apps">Application List</Link>
+                        <Link to={"/geo_map"}>地图信息</Link>
+                        <Link to={'/tree'}>树状图</Link>
+                    </div>
+                    <Switch>
+                        <Route path="/apps" component={Apps}/>
+                        <Route path={"/geo_map"} component={EditablePage}/>
+                        <Route path={"/tree"} component={TreeManage}/>
+                        <Route render={() => <span>Home Page</span>}/>
+                    </Switch>
+                    <Alert style={{margin: '16px 0'}} message="Click the navigation above to switch:"/>
+                    <Breadcrumb>
+                        {breadcrumbItems}
+                    </Breadcrumb>
+                </div>
+            </Router>
+        );
+
     }
 }
 
+export default withRouter(Admin)

@@ -4,7 +4,7 @@ import echarts from 'echarts/lib/echarts';
 import 'echarts/lib/chart/tree';
 export class Tree extends Component {
     static propTypes = {
-        data: PropTypes.array
+        data: PropTypes.object
     }
 
     constructor(props) {
@@ -22,7 +22,7 @@ export class Tree extends Component {
     }
 
     render() {
-        let data = this.props.data || [];
+        let data = this.props.data || {};
         this.treeChart && this.treeChart.setOption({
             tooltip: {
                 trigger: 'item',

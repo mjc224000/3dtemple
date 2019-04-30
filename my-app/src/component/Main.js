@@ -7,6 +7,7 @@ import Sider from './sider';
 import legend from 'echarts/lib/component/legend';
 import HomePage from './home-page';
 import Admin from './pages/admin'
+
 const {Provider, Consumer} = React.createContext('defaultValue')
 export {Consumer}
 
@@ -28,7 +29,7 @@ class Main extends React.Component {
     }
 
     componentDidMount() {
-console.log('fff didmount')
+
         window.addEventListener('resize', this.onWindowResize);
     }
 
@@ -63,7 +64,7 @@ console.log('fff didmount')
                         <Switch>
                             <Route exact path={'/'} component={HomePage}/>
                             <Route path={'/cockpit'} component={() => <CockPitPage/>}/>
-                            <Route path={'/admin'} component={Admin}  />
+                             <Route path={'/admin'} component={Admin}/>
                         </Switch>
                     </Provider>
                 </Layout>
