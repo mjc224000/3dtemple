@@ -9,7 +9,8 @@ export class TreeManage extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            treeData: {}
+            treeData: {},
+            treeTableData: []
         }
     }
 
@@ -49,10 +50,42 @@ export class TreeManage extends Component {
             treeTableData
         })
     }
-    updateTreeData = (option) => {
-        console.log(option,'updateTreeData');
-          this.setState({treeTableData:option})
+
+    updateTreeData = async (newRow) => {
+        const {name, fatherName, uid} = newRow;
+        const newData = [...this.state.treeTableData];
+
+        //找不到uid 新增.
+        if (!uid) {
+            let res = await this.addTreeData(newRow);
+            if (res !== 'ok') {
+                return 0
+            }
+        } else {
+            //更新
+          let res = await fetch.put(api.tree, {name, fatherName, uid});
+            let data = res.data;
+            if (data !== 'ok') {
+                return 0
+            }
+        }
+        const index = newData.findIndex(item => newRow.uid === item.uid);
+        let oldRow = newData[index];
+        newData.splice(index, 1, {
+            ...oldRow, name, fatherName
+        })
+        this.setState({
+            treeTableData: newData
+        })
+        return 1;
     }
+    addTreeData = async (newRow) => {
+        const {name, fatherName} = newRow;
+        console.log('perform add');
+        let res = await fetch.post(api.tree, {name, fatherName});
+        return res.data
+    }
+
     addRow = () => {
         let data = this.state.treeTableData;
         let newRow = {name: '新增未保存', fatherName: '新增未保存', key: Math.random()};
@@ -68,7 +101,8 @@ export class TreeManage extends Component {
             </div>
             <div style={{flex: '50%'}}>
                 <div>
-                    <TreeTable handleUpdate={this.updateTreeData} addRow={this.addRow} data={this.state.treeTableData}/></div>
+                    <TreeTable handleUpdate={this.updateTreeData} addRow={this.addRow} data={this.state.treeTableData}/>
+                </div>
             </div>
         </div>)
     }

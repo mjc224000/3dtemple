@@ -1,15 +1,34 @@
 import React, {Component} from 'react';
 import {
-    Table, Input, InputNumber, Popconfirm, Form, Button
+    Table, Input, InputNumber, Popconfirm, Form, Button, Select
 } from 'antd';
 
+const Option = Select.Option;
 const FormItem = Form.Item;
 const EditableContext = React.createContext();
 
 export class EditableCell extends React.Component {
-    getInput = () => {
+    filterOption = (input, option) => {
+
+        return option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+    }
+
+    getInput = (dataIndex, fathers) => {
+
         if (this.props.inputType === 'number') {
             return <InputNumber/>;
+        }
+        if (this.props.dataIndex === 'fatherName') {
+            return (<Select style={{width: 200}} filterOption={this.filterOption} showSearch>
+                {[this.props.data.map(function (item) {
+                    if (item !== '新增未保存' && item !== 'root') {
+                        return (<Option value={item}>
+                            {item}
+                        </Option>)
+                    }
+
+                })]}
+            </Select>)
         }
         return <Input/>;
     };
@@ -21,9 +40,10 @@ export class EditableCell extends React.Component {
             title,
             inputType,
             record,
-            index,
+            index, data,
             ...restProps
         } = this.props;
+
 
         return (
             <EditableContext.Consumer>
@@ -39,7 +59,7 @@ export class EditableCell extends React.Component {
                                             message: `Please Input ${title}!`,
                                         }],
                                         initialValue: record[dataIndex],
-                                    })(this.getInput())}
+                                    })(this.getInput(dataIndex, data))}
                                 </FormItem>
                             ) : restProps.children}
                         </td>
@@ -54,7 +74,7 @@ class EditableTable extends React.Component {
     constructor(props) {
         super(props);
 
-        this.state = {  editingKey: ''};
+        this.state = {editingKey: ''};
         this.columns = [
             {
                 title: 'id',
@@ -86,7 +106,7 @@ class EditableTable extends React.Component {
                     {form => (
                         <a
                             href="javascript:;"
-                            onClick={() => this.save(form, record.key)}
+                            onClick={() => this.save(form, record.key, record)}
                             style={{marginRight: 8}}
                         >
                             保存
@@ -105,33 +125,25 @@ class EditableTable extends React.Component {
             },
         ];
     }
+
     isEditing = record => record.uid === this.state.editingKey;
 
     cancel = () => {
         this.setState({editingKey: ''});
     };
 
-    save=(form, key)=> {
+    save = async (form, key, record) => {
         form.validateFields((error, row) => {
-            console.log(row, key, error, 'form 的row')
+
             if (error) {
                 return;
             }
-            const newData = [...this.props.data];
-            const index = newData.findIndex(item => key === item.uid);
 
-             if (index > -1) {
-                  const item = newData[index];
-                 console.log(item,row,'找到的item');
-                 newData.splice(index, 1, {
-                      ...item,
-                      ...row,
-                  });
-                 this.setState({editingKey: ''});
-                 this.props.handleUpdate(newData);
-              } else {
+            let p = this.props.handleUpdate({...record, ...row});
+            p.then(res => {
+                this.setState({editingKey: ''})
+            })
 
-              }
         });
     }
 
@@ -150,6 +162,11 @@ class EditableTable extends React.Component {
             if (!col.editable) {
                 return col;
             }
+
+            let fathers = Array.from(new Set(this.props.data.map(function (item) {
+                return item.name
+            })));
+
             return {
                 ...col,
                 onCell: record => {
@@ -160,7 +177,8 @@ class EditableTable extends React.Component {
                         dataIndex: col.dataIndex,
                         title: col.title,
                         editing: this.isEditing(record),
-                        all: '全部都是来自于onCell'
+                        all: '全部都是来自于onCell',
+                        data: fathers
                     })
                 },
             };

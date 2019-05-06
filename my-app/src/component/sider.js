@@ -1,10 +1,12 @@
 import React, {Component} from 'react';
 import {Layout, Menu, Icon} from 'antd';
 import {Link} from "react-router-dom";
+
 const {Sider, Content} = Layout;
-class SiderContainer extends Component{
-    render(){
-        return(  <Sider
+
+class SiderContainer extends Component {
+    render() {
+        return (<Sider
             trigger={null}
             collapsible
             {...this.props}
@@ -29,10 +31,15 @@ class SiderContainer extends Component{
                         <Icon type="upload"/>
                         <span>admin</span>
                     </Link>
-
+                </Menu.Item>
+                <Menu.Item>
+                    <Link to={'test'}>
+                        <span> test</span>
+                    </Link>
                 </Menu.Item>
             </Menu>
         </Sider>)
     }
 }
+
 export default SiderContainer;

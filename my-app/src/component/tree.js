@@ -16,7 +16,12 @@ export class Tree extends Component {
     componentDidMount() {
         this.treeChart = this.treeRef.current && echarts.init(this.treeRef.current);
 
+
     }
+    componentWillReceiveProps(nextProps, nextContext) {
+
+    }
+
     componentWillUnmount() {
         this.treeChart.dispose();
     }

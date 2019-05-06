@@ -3,6 +3,7 @@ import {Layout} from "antd/lib/index";
 import EchartMap from '../echartMap';
 import SVGBorder from '../presentation/svgBorder3';
 import SVGBorder2 from '../presentation/svgBorder4';
+import SVGBorder5 from '../presentation/svgBorder5';
 import fetch from "../../fetch";
 import {api} from "../../api";
 import {Tree} from '../tree';
@@ -46,6 +47,7 @@ class CockpitPage extends Component {
                     <EchartMap geoCoordMap={this.state.geoCoordMap}/>
                 </div>
                 <div style={{height: "100%"}} className={'column-4'}>
+                    <SVGBorder5/>
 
                 </div>
             </div>

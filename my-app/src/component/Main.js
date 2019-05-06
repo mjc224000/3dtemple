@@ -63,7 +63,7 @@ class Main extends React.Component {
                         }}>
                         <Switch>
                             <Route exact path={'/'} component={HomePage}/>
-                            <Route path={'/cockpit'} component={() => <CockPitPage/>}/>
+                            <Route path={'/cockpit'} component={CockPitPage}/>
                              <Route path={'/admin'} component={Admin}/>
                         </Switch>
                     </Provider>
