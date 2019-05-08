@@ -55,7 +55,7 @@ export class EditableCell extends React.Component {
                                 <FormItem style={{margin: 0}}>
                                     {getFieldDecorator(dataIndex, {
                                         rules: [{
-                                            required: true,
+                                            required: dataIndex!=='fatherName',
                                             message: `Please Input ${title}!`,
                                         }],
                                         initialValue: record[dataIndex],
@@ -139,7 +139,7 @@ class EditableTable extends React.Component {
                 return;
             }
 
-            let p = this.props.handleUpdate({...record, ...row});
+      let p = this.props.handleUpdate({...record, ...row});
             p.then(res => {
                 this.setState({editingKey: ''})
             })
@@ -157,15 +157,13 @@ class EditableTable extends React.Component {
                 cell: EditableCell,
             },
         };
-
+        let fathers = Array.from(new Set(this.props.data.map(function (item) {
+            return item.name
+        })));
         const columns = this.columns.map((col) => {
             if (!col.editable) {
                 return col;
             }
-
-            let fathers = Array.from(new Set(this.props.data.map(function (item) {
-                return item.name
-            })));
 
             return {
                 ...col,

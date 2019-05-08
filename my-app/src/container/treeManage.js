@@ -52,43 +52,52 @@ export class TreeManage extends Component {
     }
 
     updateTreeData = async (newRow) => {
-        const {name, fatherName, uid} = newRow;
-        const newData = [...this.state.treeTableData];
-
+        const {name, fatherName, uid,key} = newRow;
         //找不到uid 新增.
         if (!uid) {
             let res = await this.addTreeData(newRow);
-            if (res !== 'ok') {
-                return 0
+            if(res>-1){
+                newRow.uid = res;
+                const newData = [...this.state.treeTableData];
+
+                const index=newData.findIndex(item=>item.key===key);
+                let oldRow=newData[index];
+                newData.splice(index, 1, {
+                    ...oldRow, name, fatherName
+                })
+                this.setState({
+                    treeTableData: newData
+                })
             }
         } else {
             //更新
-          let res = await fetch.put(api.tree, {name, fatherName, uid});
+            let res = await fetch.put(api.tree, {name, fatherName, uid});
             let data = res.data;
             if (data !== 'ok') {
-                return 0
+                const newData = [...this.state.treeTableData];
+                const index = newData.findIndex(item => newRow.uid === item.uid);
+                let oldRow = newData[index];
+                newData.splice(index, 1, {
+                    ...oldRow, name, fatherName
+                })
+                this.setState({
+                    treeTableData: newData
+                })
             }
         }
-        const index = newData.findIndex(item => newRow.uid === item.uid);
-        let oldRow = newData[index];
-        newData.splice(index, 1, {
-            ...oldRow, name, fatherName
-        })
-        this.setState({
-            treeTableData: newData
-        })
-        return 1;
+        return 1
     }
     addTreeData = async (newRow) => {
         const {name, fatherName} = newRow;
-        console.log('perform add');
+
         let res = await fetch.post(api.tree, {name, fatherName});
+        console.log(res,'q res');
         return res.data
     }
 
     addRow = () => {
         let data = this.state.treeTableData;
-        let newRow = {name: '新增未保存', fatherName: '新增未保存', key: Math.random()};
+        let newRow = {name: null, fatherName: null, key: Math.random()};
         data.push(newRow);
         this.setState({data: [...data]});
 

@@ -149,6 +149,9 @@ class Table extends Component {
     componentDidUpdate(prevProps, prevState, snapshot) {
        let liHeight = this.liRef.current.scrollHeight;
         if (this.state.shouldScroll) {
+            if(this.timer){
+                window.clearTimeout(this.timer);
+            }
             this.timer = setTimeout(() => {
                 this.setState((state)=>{
                     let {offset}=state;
